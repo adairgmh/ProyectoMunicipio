@@ -1,0 +1,87 @@
+{% extends "contribuyente/base.html" %} 
+
+{% load static %} 
+
+{% block contenido %}
+
+
+    <div class="container container-data  d-flex align-items-center flex-column">
+        
+        <h1 class="titulo">
+            <center>{{ entity }}</center>
+            
+        </h1>
+
+
+<form method="POST" action="" class="data-users">
+        <div class="card">
+            <div class="card-header">
+                <h5 >
+                    <center>{{ title }}</center>
+                </h5>
+            </div>
+            <div class="card-body">
+                        {% block card-body %}
+
+                        {% endblock %}
+            </div>
+                
+            <div class="card-footer">
+                {% block card-footer %}
+
+                {% endblock %}
+            </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+{% endblock %}
+
+{% block javascript %} 
+    <script >
+        {% if form.errors %}
+            var errors = '';
+            {% for field in form %}
+                {% for error in field.errors %}
+                    errors += '{{ error }}\n';
+                {% endfor %}
+            {% endfor %}
+            
+            Swal.fire({
+            title: 'Error!',
+            text: errors,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+            });
+        {% endif %}
+
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var parameters = $(this).serializeArray();
+
+            $.ajax({
+                url: window.location.pathname,
+                type: 'POST',
+                data: parameters,
+                dataType: 'json'
+            
+            }).done(function(data) {
+                if (!data.hasOwnProperty('error')) {
+                   
+                    location.href = '{{ list_url }}';
+                    return false
+                }
+                else{
+                    message_error(data.error);
+                }
+            }).fail(function(data) {
+                print("Hola")
+            }).always(function(data) {
+                
+            });
+        });
+    </script>
+{% endblock %}

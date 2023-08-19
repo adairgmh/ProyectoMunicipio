@@ -1,0 +1,107 @@
+{% extends "personal/base.html" %} {%load static%} 
+{% block head %}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Freelancer - Start Bootstrap Theme</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/styles2.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/styles-personal.css'%}" rel="stylesheet">
+    <link href="{% static 'css/menu.css'%}" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css'%}">
+
+
+
+</head>
+{% endblock %} 
+
+{% block contenido %}
+<div class="container container-data  d-flex align-items-center flex-column">
+    <div class="col-12">
+
+        <h1 class="titulo">
+            <center>¡Bienvenido a la seccion de Predial!</center>
+        </h1>
+
+        
+
+        <div class="card-grid">
+
+            <div class="card">
+                <div class="header">
+                  <h3>Realizar cobros</h3>
+                </div>
+              
+                <div class="container">
+                    <p>Podras realizar cobros del predio.</p>
+                    <a class="btn btn-primary" href="{% url 'predial:historial_pagados'%}">Acceder</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h3>Contribuyentes</h3>
+                </div>
+
+                <div class="container">
+                    <p>Toda la informacion correspondiente a los contribuyentes.</p>
+                    <a class="btn btn-primary" href="{% url 'predial:contribuyente_list'%}">Acceder</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h3>Predios</h3>
+                </div>
+
+                <div class="container">
+                    <p>Toda la informacion correspondiente a los predios.</p>
+                    <a class="btn btn-primary" href="{% url 'predial:predio_list'%}">Acceder</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h3>Pagos</h3>
+                </div>
+
+                <div class="container">
+                    <p>Toda la informacion correspondiente a los adeudos y pagos de los predios.</p>
+                    <a class="btn btn-primary" href="{% url 'predial:pago_index'%}">Acceder</a>
+                </div>
+                
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h3>Timbrados</h3>
+                </div>
+
+                <div class="container">
+                    <p>Toda la informacion correspondiente a los timbrados de los pagos de los predios.</p>
+                    <a class="btn btn-primary" href="{% url 'predial:timbrado_list'%}">Acceder</a>
+                </div>
+                
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

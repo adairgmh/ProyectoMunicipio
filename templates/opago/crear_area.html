@@ -1,0 +1,35 @@
+{% extends 'personal/base.html' %}
+{% load static %}
+
+{% block contenido %}
+    <section class="personal-data">
+        <div class="container-data-personal">
+            <div class="row justify-content-center">
+                <div class="cols-md-8 col-lg-2 mb-0">
+                    <p class="" style="margin: 50px;"></p>
+                    <center><img class="img-fluid" src="{% static 'assets/img/portfolio/area.jpg' %}" alt="..." /></center>
+                </div>
+            </div>
+        </div>
+        <h1>
+            <center>Nueva Area</center>
+        </h1>
+        <div class="container">
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade active show" id="custom-tabs-two-home" role="tabpanel" aria-labelledby="custom-tabs-two-home-tab">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <center>
+                                <button class="btn btn-primary btn-xl" type="submit">Crear</button>
+                                <a href="{% url 'listar_area' %}" class="btn btn-primary btn-xl">Cancelar</a>
+                            </center>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock contenido %}
+    

@@ -1,0 +1,67 @@
+{% extends 'personal/base.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="container container-data d-flex align-items-center flex-column">
+    <div class="col-12">
+        <h1 class="titulo">
+            <center>Registros</center>
+        </h1>
+        <div class="">
+            <div class="card-header">
+                <div class="card-tools">
+                    <div class="input-group-append">
+                        <a href="{% url 'nueva_orden' %}"> <button class="btn btn-primary">Nueva Orden</button></a>
+                        <a href="{% url 'ordenesp' %}"> <button class="btn btn-primary">Volver</button></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-hover text-nowrap dataTable no-footer dtr-inline collapsed" 
+                id="example1" aria-describedby="example1_info">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Fecha de emision</th>
+                            <th>Solicitante</th>
+                            <th>Descripcion</th>
+                            <th>Concepto</th>
+                            <th>Estatus</th>
+                            <!-- <th>Producto</th> 
+                            <th>Añadir producto</th> -->
+                            <th>Ticket</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orden in object_list %}
+                        <tr>
+                            <td>{{orden.area}}-{{orden.folio}}</td>
+                            <td>{{ orden.fecha_emision }}</td>
+                            <td class="table-print">{{ orden.nombre_solicitante }}</td>
+                            <td>{{ orden.descripcion }}</td>
+                            <td>{{ orden.concepto }}</td>
+                            {% if orden.estatus == False %} 
+                            <td>Emitida</td>
+                            {% else %} 
+                            <td>Pagada</td>
+                            {% endif %}
+                            <td><center><a class="btn btn-primary" href="{% url 'ticket' orden.id %}" role="button" style="background-color:#1abc9c"><i class="fas fa-file"></i></a> </center></td>
+                            <!-- {% if orden.estatus == False %}
+                            <td><center><a class="btn btn-primary" href="{% url 'consulta_area'%}" role="button"><i class="fas fa-eye"></i> </a> </i></center></td>
+                            <td><center><a class="btn btn-primary" href="{% url 'consulta_area'%}" role="button" style="background-color:#1abc9c"><i class="fas fa-plus"></i></a> </center></td>
+                            {% else %}
+                            <td><center><a class="btn btn-primary" href="/media/{{orden.producto}}" role="button" target="_blank"><i class="fas fa-eye"></i></a></center></td>
+                            <td> <center><a class="btn btn-primary" href="" role="button" style="background-color:#1abc9c"><i class="fas fa-plus"></i></a></center></td>
+                            {% endif %}
+                            <td><center><a class="btn btn-primary" href="" style="background-color:#212529"><i class="fas fa-file"></i></a></center></td>
+                            <td><center><a class="btn btn-primary" href="" role="button" style="background-color:#1abc9c"><i class="fas fa-file"></i></a> </center></td> -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}
+    

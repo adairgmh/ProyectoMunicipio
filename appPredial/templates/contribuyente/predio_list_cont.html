@@ -1,0 +1,116 @@
+{% extends "contribuyente/base.html" %} 
+{%load static %}
+
+
+{% block contenido %}
+
+<div class="container container-data  d-flex align-items-center flex-column">
+    <div class="col-12">
+        <h1 class="titulo">
+            <center>Lista de Predios por Contribuyente</center>
+        </h1>
+
+
+
+{% if object_list %}
+            <div class="card-body">
+                <h4 style="text-align: center;">  RFC del Contribuyente: {{ query }} </h4><br>
+                <h4 style="text-align: center;">  Lista de predios del contribuyente </h4><br>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap" id="example1">
+                        <thead>
+                            <tr>
+                                <th>
+                                CLAVE CATASTRAL
+                                </th>
+                                <th>
+                                TIPO DE PREDIO
+                                </th>
+                                <th>
+                                COSTO DEL PREDIO
+                                </th>
+                                
+                                <th>
+                                ACCIONES
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form>
+                                {% for c in object_list %}
+                                <tr>
+                                    <td> {{ c.claveCatastral}} </td>
+                                    <td> {{ c.idtipo}} </td>
+                                    <td> 
+                                    {{ c.idtipo.costo}}
+                                    </td>
+                                    
+                                    <td> 
+                                        {% if perms.predial.change_predio %}
+                                        <a href="{% url 'predial:predio_edit' c.id %} "><button class="btn btn-secondary btnTest">Editar</button></a>
+                                    {% else %}
+                                        
+                                    {% endif %}
+                                    
+                                    {% if perms.predial.delete_predio %}
+                                        <a href="{% url 'predial:predio_delete' c.id %} "><button class="btn btn-danger btnTest">Eliminar</button></a>
+                                    {% else %}
+    
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="input-group-append">
+                    {% if perms.predial.add_pago %}
+                    <a href="{% url 'predial:predio_add' %}?query={{query}}"><button class="btn btn-primary btnTest">Registrar Predio</button></a>
+                    {% else %}
+                    
+                    {% endif %}
+                </div>
+
+                  
+                </div>   
+            </div> 
+            
+{% elif not object_list and contribuyente %}
+            <div class="card-body">
+                <h4 style="text-align: center;">  RFC del Contribuyente: {{ query }} </h4><br>
+                
+                
+                <h5 style="text-align: center;">  No tiene predios registrados!</h5><br>
+            </div>
+
+            <div class="card-footer">
+                <div class="input-group-append">
+                    {% if perms.predial.add_predio %}
+                    <a href="{% url 'predial:predio_add' %}?query={{query}}"><button class="btn btn-primary btnTest">Registrar Predio</button></a>
+                    {% else %}
+                    
+                    {% endif %}
+                </div>
+
+                
+                </div>   
+            </div> 
+{% elif query == "" %}
+
+{% elif not object_list and not contribuyente and query %}
+            
+    <h5 style="text-align: center;">  No existe ese contribuyente!</h5><br>
+
+    
+{% endif %}   
+        </div>
+    </div>
+</div>
+
+    
+    
+{% endblock %}

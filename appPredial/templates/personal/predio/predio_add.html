@@ -1,0 +1,242 @@
+{% extends "personal/base.html" %} 
+
+{% load static %} 
+
+{% block contenido %}
+
+
+    <div class="container container-data  d-flex align-items-center flex-column">
+        
+        <h1 class="titulo">
+            <center>{{ entity }}</center>
+            
+        </h1>
+
+
+<form method="POST" action="" class="data-users">
+        <div class="card">
+            <div class="card-header">
+                <h5 >
+                    <center>{{ title }}</center>
+                </h5>
+            </div>
+            <div class="card-body">
+                        {% block card-body %}
+							{% csrf_token %}
+							<input type="hidden" name="action" value= "{{ action }}">
+							<div class="row ">
+				
+								<div class="form-group form-add col-3 " >
+									{{ form.claveCatastral.label }}
+									{{ form.claveCatastral }}
+								</div>
+					
+								<div class="form-group form-add col-3 " >
+									{{ form.estado.label }}
+									{{ form.estado }}
+								</div>
+					
+								<div class="form-group form-add col-3 " >
+									{{ form.municipio.label }}
+									{{ form.municipio }}
+								</div>
+					
+								<div class="form-group form-add col-3" >
+									{{ form.comunidad.label }}
+										<select name="comunidad" id="comunidad" class="form-control" >
+											<option value="0">Seleccione una comunidad</option>
+											{% for item in comunidades %}
+												<option value="{{item.id}}">{{item.nombre_comunidad}}</option>
+											{% endfor %}
+										</select>
+									
+								</div>
+
+								<div class="form-group form-add col-3" >
+									{{ form.colonia.label }}
+										<select name="colonia" id="colonia" class="form-control" >Seleccione una colonia
+											<option value="0">Seleccione una colonia</option>
+											{% for item in colonias %}
+											<option value="{{item.id}}">{{item.nombre_colonia}}</option>
+											{% endfor %}
+										</select>
+									
+								</div>
+
+								<div class="form-group form-add col-3 " >
+									{{ form.cp.label }}
+										<select name="cp" id="cp" class="form-control" >Seleccione un codigo postal
+											<option value="0">Seleccione un codigo postal</option>
+											{% for item in codigosPostales %}
+											<option value="{{item.id}}">{{item.codigoPostal}}</option>
+											{% endfor %}
+										</select>
+								</div>
+					
+								<div class="form-group form-add col-3 " >
+									{{ form.calle.label }}
+									{{ form.calle }}
+								</div>
+					
+								<div class="form-group form-add col-3 " >
+									{{ form.numeroint.label }}
+									{{ form.numeroint }}
+								</div>
+					
+								<div class="form-group form-add col-3 " >
+									{{ form.numeroext.label }}
+									{{ form.numeroext }}
+								</div>
+
+								<div class="form-group form-add col-3 " >
+									{{ form.idtipo.label }}
+										<select name="idtipo" id="idtipo" class="form-control" >
+											<option value="0"></option>
+											{% for item in tiposPredios %}
+											<option value="{{item.id}}">{{item.tipo}}</option>
+											{% endfor %}
+										</select>
+									
+								</div>
+					
+								<div class="form-group form-add col-3 " >
+									{{ form.rfc.label }}
+									{{ form.rfc }}
+								</div>
+								
+							
+								
+							</div>
+
+
+
+
+                        {% endblock %}
+            </div>
+                
+            <div class="card-footer">
+                {% block card-footer %}
+					<a  href="{% url 'predial:predio_list' %}">
+						<input type="button" class="btn btn-danger mb-2 mx-2 btn-pers" value="Cancelar">
+					</a>
+                    <input type="submit" class="btn btn-primary mb-2 btn-pers" value="Guardar Registro">
+                {% endblock %}
+            </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+{% endblock %}
+
+{% block javascript %} 
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+	<script>
+		$(function(){
+			$("#comunidad").select2({
+				allowClear: true,
+				placeholder: {
+					id:'0',
+					text: 'Seleccione una comunidad'
+				}
+
+			});
+		});
+		
+
+	</script>	
+
+	<script>
+		$(function(){
+			$("#colonia").select2({
+				allowClear: true,
+				placeholder: {
+					id:'0',
+					text: 'Seleccione una colonia'
+				}
+
+			});
+		});
+		
+
+	</script>	
+
+	<script>
+		$(function(){
+			$("#cp").select2({
+				allowClear: true,
+				placeholder: {
+					id:'0',
+					text: 'Seleccione un código postal'
+				}
+
+			});
+		});
+		
+
+	</script>
+	
+	<script>
+		$(function(){
+			$("#idtipo").select2({
+				allowClear: true,
+				placeholder: {
+					id:'0',
+					text: 'Seleccione un tipo de predio'
+				}
+
+			});
+		});
+		
+
+	</script>	 
+
+    <script >
+        {% if form.errors %}
+            var errors = '';
+            {% for field in form %}
+                {% for error in field.errors %}
+                    errors += '{{ error }}\n';
+                {% endfor %}
+            {% endfor %}
+            
+            Swal.fire({
+            title: 'Error!',
+            text: errors,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+            });
+        {% endif %}
+
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var parameters = $(this).serializeArray();
+
+            $.ajax({
+                url: window.location.pathname,
+                type: 'POST',
+                data: parameters,
+                dataType: 'json'
+            
+            }).done(function(data) {
+                if (!data.hasOwnProperty('error')) {
+                   
+                    location.href = '{{ list_url }}';
+                    return false
+                }
+                else{
+                    message_error(data.error);
+                }
+            }).fail(function(data) {
+                print("Hola")
+            }).always(function(data) {
+                
+            });
+        });
+    </script>
+{% endblock %}
+		

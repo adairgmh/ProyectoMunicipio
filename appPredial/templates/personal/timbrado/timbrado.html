@@ -1,0 +1,40 @@
+{% extends "personal/base.html" %} 
+{%load static %}
+
+
+{% block modal %}
+
+  <!-- Modal -->
+  <div class="modal" data-keyboard="false" data-backdrop="static" id="myModal">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Aviso!</h5>
+		  
+		</div>
+		<div class="modal-body">
+		  Timbrado Exitoso
+		</div>
+		<div class="modal-footer">
+			
+		  <a href="{% url 'generales:personal' %}"><button type="button" class="btn btn-secondary">Cerrar</button></a>
+		</div>
+	  </div>
+	</div>
+  </div>
+
+
+{% endblock %}
+
+
+{% block javascript %} 
+    <script>
+        
+		$( document ).ready(function() {
+            $('#myModal').modal('toggle')
+        });
+	
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "contribuyente/form.html" %} 
+{% load static %} 
+
+
+{% block aside %}
+
+{% endblock %}
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#page-top">Tzompantepec</a>
+            <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Servicios</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">Info</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contacto</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">{{ user.username }}</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'generales:logoutC' %}"><span class="icon"><ion-icon name="log-out-outline"></ion-icon></span></a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+{% block contenido %}
+
+
+    <div class="container container-data  d-flex align-items-center flex-column">
+        
+        <h1 class="titulo">
+            <center>Registro</center>
+            
+        </h1>
+
+
+<form method="POST" action="" class="data-users">
+        <div class="card">
+            <div class="card-header">
+                <h5 >
+                    <center>{{ title }}</center>
+                </h5>
+            </div>
+            <div class="card-body">
+				{% block card-body %}
+
+	
+				{% csrf_token %}
+				<input type="hidden" name="action" value= "{{ action }}">
+				
+				<div class="row ">
+					{% for field in form.visible_fields %}
+					
+						<div class="form-group">
+							<label for="formGroupExampleInput">{{ field.label }}</label> {{ field }}
+						</div>
+					
+					
+					{% endfor %}
+				</div>
+					
+				
+				
+				
+		{% endblock %}
+            </div>
+                
+            <div class="card-footer">
+                {% block card-footer %}
+					<a href="{% url 'generales:loginC'%}"> Ya tienes una Cuenta?</a>
+						<input type="submit" class="btn btn-primary mb-2 btn-pers" value="Registrarse">
+				{% endblock %}
+            </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+{% endblock %}
+
+
+
+		

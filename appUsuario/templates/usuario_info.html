@@ -1,0 +1,168 @@
+{% extends "contribuyente/base.html" %} {%load static%} 
+
+
+
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#page-top">Tzompantepec</a>
+            <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Servicios</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">Info</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contacto</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">{{ user.username }}</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'generales:logoutC' %}"><span class="icon"><ion-icon name="log-out-outline"></ion-icon></span></a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+{% block contenido %}
+
+
+<br><br><br>
+<!-- Portfolio Section-->
+<section class="page-section portfolio" id="portfolio">
+    <div class="container">
+        
+        <!-- Portfolio Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Información de Predios</h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Portfolio Grid Items-->
+        <div class="row">
+            <div class="col-lg-4 ms-auto">
+                <p class="lead">Nombre de Usuario: {{ user.username }}</p>
+            </div>
+            <div class="col-lg-4 ms-auto">
+                <p class="lead">Correo: {{ user.email }}</p>
+            </div>
+            <div class="col-lg-4 ms-auto">
+                <p class="lead">Nombre(s): {{ user.nombres }}</p>
+            </div>
+            <div class="col-lg-4 me-auto">
+                <p class="lead">Apellidos(s): {{ user.apellidos }}</p>
+            </div>
+            <div class="col-lg-4 me-auto">
+                <p class="lead">RFC: {{ user.contribuyente.rfc }}</p>
+            </div>
+        </div>
+
+        
+<div class="container container-data  d-flex align-items-center flex-column">
+    <div class="col-12">
+        
+
+{% if object_list %}
+            <div class="card-body">
+            
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap" id="example1">
+                        <thead>
+                            <tr>
+                                <th>
+                                CLAVE CATASTRAL
+                                </th>
+                                <th>
+                                TIPO DE PREDIO
+                                </th>
+                                <th>
+                                COSTO DEL PREDIO
+                                </th>
+                                
+                                <th>
+                                ACCIONES
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form>
+                                {% for c in object_list %}
+                                <tr>
+                                    <td> {{ c.claveCatastral}} </td>
+                                    <td> {{ c.idtipo}} </td>
+                                    <td> 
+                                    {{ c.idtipo.costo}}
+                                    </td>
+                                    
+                                    <td>  
+                                        <a href="{% url 'predial:predio_info_cont' c.id %} "><button class="btn btn-secondary btnTest">información</button></a>
+                                        <a href="{% url 'predial:historialCont' %}?query={{c.claveCatastral}}"><button class="btn btn-primary btnTest">Historial de Pagos</button></a>
+                                        
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="input-group-append">
+                    
+                    
+                    
+                    
+                </div>
+
+                  
+                </div>   
+            </div> 
+            
+{% elif not object_list and contribuyente %}
+            <div class="card-body">
+                <h4 style="text-align: center;">  RFC del Contribuyente: {{ query }} </h4><br>
+                
+                
+                <h5 style="text-align: center;">  No tiene predios registrados!</h5><br>
+            </div>
+
+            <div class="card-footer">
+                <div class="input-group-append">
+                    {% if perms.predial.add_predio %}
+                    <a href="{% url 'predial:predio_add' %}?query={{query}}"><button class="btn btn-primary btnTest">Registrar Predio</button></a>
+                    {% else %}
+                    
+                    {% endif %}
+                </div>
+
+                
+                </div>   
+            </div> 
+{% elif query == "" %}
+
+{% elif not object_list and not contribuyente and query %}
+            
+    <h5 style="text-align: center;">  No existe ese contribuyente!</h5><br>
+
+    
+{% endif %}   
+        </div>
+    </div>
+</div>
+
+
+
+
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock %}

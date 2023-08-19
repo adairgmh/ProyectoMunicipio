@@ -1,0 +1,36 @@
+{% extends 'personal/base.html' %}
+{% load static %}
+
+{% block contenido %}
+<div>
+    <section class="personal-data">
+        <div class="container-data-personal">
+            <div class="row justify-content-center">
+                <div class="cols-md-8 col-lg-2 mb-0">
+                    <p class="" style="margin: 100px;"></p>
+                    <center><img class="img-fluid"  style="width:50%;" src="{% static 'assets/img/portfolio/eliminar.png' %}" alt="..." /></center>
+                </div>  
+            </div>
+            <h1>
+                <center>Eliminar Area</center>
+            </h1>
+            <br>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="custom-tabs-two-tabContent">
+                <div class="tab-pane fade active show" id="custom-tabs-two-home" role="tabpanel" aria-labelledby="custom-tabs-two-home-tab">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <center><h1>¿Estas seguro de eliminar esta area?</h1></center>
+                        <br>
+                        <center>
+                            <button class="btn btn-danger btn-circle" type="submit">Eliminar</button>
+                            <button class="btn btn-primary btn-circle"> <a style="color: white;" href="{% url 'listar_area' %}">Cancelar</a></button>
+                        </center>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock contenido %}

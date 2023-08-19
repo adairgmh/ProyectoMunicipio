@@ -1,0 +1,180 @@
+{% extends "contribuyente/form.html" %} 
+{% load static %} 
+
+
+{% block card-body %}
+
+	
+		{% csrf_token %}
+		<input type="hidden" name="action" value= "{{ action }}">
+		
+		<div class="row ">
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.claveCatastral.label.as_hidden }}</label> 
+				{{ form.claveCatastral.as_hidden }}
+
+				<label for="formGroupExampleInput">Clave Catastral:</label> 
+				
+				<label for="formGroupExampleInput">{{ claveCatastral }}</label> 
+			</div>
+			
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.formaPago.label }}</label> 
+				{{ form.formaPago }}
+			</div>
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.agnio.label }}</label> 
+				{{ form.agnio }}
+			</div>
+
+			<div class="form-group">
+				<label for="formGroupExampleInput">Tasa Base del Predio</label><br> 
+				{{ tasabase }} 
+				
+			</div>
+
+			<div class="form-group"  >
+				<label for="formGroupExampleInput">{{ form.recargo.label.as_hidden }}</label> 
+				{{ form.recargo.as_hidden }}
+
+				<label for="formGroupExampleInput">Recargo:</label> 
+				
+				<label for="formGroupExampleInput">{{ recargo }}</label> 
+			</div>
+
+			<div class="form-group"  >
+				<label for="formGroupExampleInput">{{ form.descuento.label.as_hidden }}</label> 
+				{{ form.descuento.as_hidden }}
+			</div>
+
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.fechaPago.label.as_hidden }}</label> 
+				{{ form.fechaPago.as_hidden }}
+
+				<label for="formGroupExampleInput">Fecha de Pago:</label> 
+				
+				<label for="formGroupExampleInput">{{ fechaPago }}</label> 
+			</div>
+
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.total.label.as_hidden }}</label> 
+				{{ form.total.as_hidden  }}
+
+				<label for="formGroupExampleInput">Total:</label> 
+				
+				<label for="formGroupExampleInput">{{ total }}</label>
+			</div>
+			
+		
+		</div>	
+{% endblock %}
+{% block card-footer %}
+<div>
+	<input type="submit" class="btn btn-primary mb-2 btn-pers" value="Pagar">
+
+</div>
+
+{% endblock %}
+
+
+{% block modal %}
+
+  <!-- Modal -->
+  <div class="modal" data-keyboard="false" data-backdrop="static" id="myModal">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Aviso!</h5>
+		  
+		</div>
+		<div class="modal-body">
+		  El cobro se ha realizado con exito!
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-primary">Timbrar</button>
+		  <a href="{% url 'predial:contribuyente_historial' %}?buscar={{claveCatastral}}"><button type="button" class="btn btn-secondary">Cerrar</button></a>
+		</div>
+	  </div>
+	</div>
+  </div>
+
+
+{% endblock %}
+
+
+{% block javascript %} 
+<script>
+	{% if form.errors %}
+		var errors = '';
+		{% for field in form %}
+			{% for error in field.errors %}
+				errors += '{{ error }}\n';
+			{% endfor %}
+		{% endfor %}
+		
+		Swal.fire({
+		title: 'Error!',
+		text: errors,
+		icon: 'error',
+		confirmButtonText: 'Ok'
+		});
+	{% endif %}
+
+	$('form').on('submit', function (e) {
+		e.preventDefault();
+		var parameters = $(this).serializeArray();
+
+		$.ajax({
+			url: window.location.pathname,
+			type: 'POST',
+			data: parameters,
+			dataType: 'json'
+		
+		}).done(function(data) {
+			if (!data.hasOwnProperty('error')) {
+				$('#myModal').modal('show', {
+					backdrop: 'static',
+					keyboard: false
+				});
+			}
+			else{
+				message_error(data.error);
+				console.log("a")
+			}
+
+			
+		}).fail(function(data) {
+			print("Hola")
+		}).always(function(data) {
+			
+		});
+		
+
+	});
+
+	$(document).ready(function(){
+		$(".op").click(function(evento){
+		  
+			var valor = $(this).val();
+		  
+			if(valor == 'r'){
+				$("#rdiv").css("display", "block");
+				$("#ddiv").css("display", "none");
+			}else{
+				$("#rdiv").css("display", "none");
+				$("#ddiv").css("display", "block");
+			}
+
+			if(valor == 'none'){
+				$("#rdiv").css("display", "none");
+				$("#ddiv").css("display", "none");
+			}
+	});
+});
+
+
+
+</script>
+
+
+{% endblock %}

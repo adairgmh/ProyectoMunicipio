@@ -1,0 +1,59 @@
+{% extends 'personal/base.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="container container-data d-flex align-items-center flex-column">
+    <div class="col-12">
+        <h1 class="titulo">
+            <center>¡Bienvenido a la sección de Ordenes de Pago!</center>
+        </h1>
+        <div class="card-grid">
+            <div class="card">
+                <div class="header">
+                    <h3>Areas</h3>
+                </div>
+                <div class="container">
+                    <p>Areas del municipio</p>
+                    <a class="btn btn-primary" href="{% url 'listar_area' %}">Acceder</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="header">
+                    <h3>Ordenes</h3>
+                </div>
+                <div class="container">
+                    <p>Ordenes de pago</p>
+                    <a class="btn btn-primary" href="{% url 'consulta_area' %}">Acceder</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="header">
+                    <h3>Registros</h3>
+                </div>
+                <div class="container">
+                    <p>Registros que se han realizado</p>
+                    <a class="btn btn-primary" href="{% url 'reportes' %}">Acceder</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="header">
+                    <h3>Conceptos</h3>
+                </div>
+                <div class="container">
+                    <p>Conceptos vigentes para realizar el cobro</p>
+                    <a class="btn btn-primary" href="{% url 'listar_conceptos' %}">Acceder</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="header">
+                    <h3>Caja</h3>
+                </div>
+                <div class="container">
+                    <p>Muestra de tickets pagados y por pagar</p>
+                    <a class="btn btn-primary" href="{% url 'caja' %}">Acceder</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}

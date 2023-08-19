@@ -1,0 +1,175 @@
+{% extends "contribuyente/base.html" %} 
+
+{%load static%} 
+
+{% block head %}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Freelancer - Start Bootstrap Theme</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/styles2.css' %}" rel="stylesheet" />
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css'%}">
+
+</head>
+{% endblock %}
+
+{% block contenido %}
+<!-- Masthead-->
+<header class="masthead bg-primary text-white text-center">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">¡Bienvenido a la seccion de pagos de predial!</h1>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Masthead Subheading-->
+        <p class="masthead-subheading font-weight-light mb-0">Predial</p>
+    </div>
+</header>
+
+<section class="page-section portfolio" id="portfolio">
+    <div class="container">
+        <!-- Portfolio Grid Items-->
+        <div class="row justify-content-center">
+            <!-- Portfolio Item 1-->
+            <h1 class="header">
+                <center></center>
+            </h1>
+
+            <div class="card">
+            <div class="card-header">
+                <h2><center>Historial de Pagos</center></h2>
+            </div>
+            {% if object_list %}
+            <div class="card-body">
+                <h4 style="text-align: center;">  Predio con la Clave Catastral: {{ query }} </h4><br>
+                <h5 style="text-align: center;">  Tipo de Predio: 
+                {% for c in predio %}
+                {{ c.idtipo.tipo }} 
+                {% endfor %}
+                </h5>
+                <div class="card-body table-responsive p-0">
+
+                    <table class="table table-hover text-nowrap" id="example1">
+                        <thead>
+                            <tr>
+                                <th>
+                                COSTO DEL PREDIO
+                                </th>
+                                <th>
+                                AÑO
+                                </th>
+                                <th>
+                                RECARGO
+                                </th>
+                                <th>
+                                DESCUENTO
+                                </th>
+                                <th>
+                                Total
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            
+                                {% for c in object_list %}
+                                <tr>
+                                    <td> {{ c.claveCatastral.idtipo.costo}} </td>
+                                    <td> {{ c.agnio}} </td>
+                                    <td> 
+                                    {{ c.recargo}}
+                                    </td>
+                                    <td> 
+                                    {{c.descuento}} 
+                                    </td>
+                                    <td> 
+                                    {{c.total}} 
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <div class="input-group-append">
+
+                    <a href="{% url 'predial:contribuyente_pago_add' %}?query={{query}}"><button class="btn btn-primary btnTest">Pagar</button></a>
+
+                 </div>
+
+
+                </div>   
+            </div> 
+
+            {% elif not object_list and predio %}
+                <div class="card-body">
+                    <h4 style="text-align: center;">  Predio con la Clave Catastral: {{ query }} </h4><br>
+                    <h5 style="text-align: center;">  Tipo de Predio: 
+                    {% for c in predio %}
+                    {{ c.idtipo.tipo }} 
+                    {% endfor %}
+                    </h5><br>
+
+                    <h5 style="text-align: center;">  No hay pagos registrados!</h5><br>
+                </div>
+
+                <div class="card-footer">
+                    <div class="input-group-append">
+                        <a href="{% url 'predial:contribuyente_pago_add' %}?query={{query}}"><button class="btn btn-primary btnTest">Pagar</button></a>
+                </div>
+
+                </div>   
+            </div> 
+            {% elif query == "" %}
+
+
+            {% elif not object_list and not predio and query %}
+
+                <h5 style="text-align: center;">  No existe ese predio!</h5><br>
+
+
+            {% endif %}   
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+
+
+</div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+
+

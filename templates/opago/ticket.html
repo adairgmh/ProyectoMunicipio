@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <style>
+        .img-invoice{
+            width: 50px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .head{
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        #invoice thead tr th{
+            text-align: left;
+            border-bottom: 1px solid black;
+            border-top: 1px solid black;
+            padding: 4px;
+        }
+
+        #invoice thead tr th{
+            text-align: left;
+            border-bottom: 1px solid black;
+            border-top: 1px solid black;
+            padding-top: 4px;
+        }
+
+        #invoice thead tr{
+            margin-bottom: 0px;
+            padding-bottom: 0px;
+        }
+
+        #invoice tbody tr{
+            padding: 0;
+        }
+
+        .text-center{
+            text-align: center;
+        }
+    </style>
+
+    <body>
+        <img src="{{icon}}" class="img-invoice" alt="">
+        <p class="head">
+            {{comp.name|upper}}
+            <br>
+            {{comp.ruc}}
+            <br>
+            {{comp.address|upper}}
+            <br>
+            {{comp.titulo|upper}}
+        </p>
+        <br>
+        <br>
+        <p>
+            <i><center>
+                <h1>
+                    <b>Detalle de la orden</b>
+                </h1>
+            </center></i>
+        </p>
+        <p>
+            <center>
+                <h2><b>Fecha:</b>{{ordenes_pago.fecha_emision}}
+                <br>
+                <b>Folio:</b>{{ordenes_pago.folio}}
+                <br>
+                <b>Concepto:</b>{{ordenes_pago.concepto}}
+                <br>
+                <b>Total a pagar: $</b>{{ordenes_pago.monto}} MXN
+                <br>
+                </h2>
+            </center>
+        </p>
+        <table style="margin-top: 250px;">
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>*******************************</th>
+                </tr>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </body>
+</html>

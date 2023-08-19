@@ -1,0 +1,73 @@
+{% extends 'personal/base.html' %}
+{% load static %} 
+{% block contenido %}
+<div class="container container-data d-flex align-items-center flex-column">
+    <div class="col-12">
+        <h1 class="titulo">
+            <center>Registros</center>
+        </h1>
+        <div class="">
+            <div class="card-header">
+                <div class="card-tools">
+                    <div class="input-group-append">
+                        <a href="{% url 'ordenesp' %}">
+                            <button class="btn btn-primary">Volver</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-hover text-nowrap dataTable no-footer dtr-inline collapsed"
+            id="example1" aria-describedby="example1_info">
+            <thead>
+                <tr>
+                    <th>Folio</th>
+                    <th>Fecha de emisión</th>
+                    <th>Area</th>
+                    <th>Concepto</th>
+                    <th>Solicitante</th>
+                    <th>Descripcion</th>
+                    <th>Estatus</th>
+                    <th>Comprobante</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in object_list %} 
+                <tr>
+                    <td>{{ c.folio }}</td>
+                    <td>{{ c.fecha_emision }}</td>
+                    <td>{{ c.area }}</td>
+                    <td>{{ c.concepto }}</td>
+                    <td>{{ c.nombre_solicitante }}</td>
+                    <td>{{ c.descripcion }}</td>
+                    {% if c.estatus %} 
+                    <td>
+                        <a class="badge badge-success" href="{% url 'modificar' c.id %}" style="background-color: green;">Pagado</a>
+                    </td>
+                    {% else %} 
+                    <td>
+                        <a class="badge badge-warning" href="{% url 'modificar' c.id %}" role="button"
+                        style="background-color: red;">Por Pagar</a>
+                    </td>
+                    {% endif %}
+
+                    {% if c.estatus %} 
+                    <td>
+                        <center>
+                            <a class="btn btn-primary" href="{% url 'pdf' c.id %}" style="background-color: #212529;">
+                            <i class="fas fa-file"></i></a>
+                        </center>
+                    </td>
+                    {% else %}
+                        <!-- Boton Oculto -->  
+                    {% endif %} 
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}
+  

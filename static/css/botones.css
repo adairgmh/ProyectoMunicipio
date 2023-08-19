@@ -1,0 +1,41 @@
+/* Estilo para botón agregar*/
+
+.btn-agregar {
+    color: #fff !important;
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+}
+ 
+.btn-agregar:hover {
+    color: #fff !important;
+    background-color: #0056b3 !important;
+    border-color: #004d99 !important;
+} 
+
+/* Estilo para botón buscar*/
+
+.btn-buscar {
+    color: #fff !important; 
+    background-color: #022279 !important; 
+    border-color: #5659ea !important;
+}
+
+
+.btn-buscar:hover {
+    color: #fff !important; 
+    background-color: #022279 !important; 
+    border-color: #5659ea !important; 
+}
+
+/* Estilo para botón cobrar*/
+.btn-cobrar {
+    color: #fff !important; 
+    background-color: #e66800 !important; 
+    border-color: #e99753 !important;
+}
+
+.btn-cobrar:hover {
+    color: #fff !important; 
+    background-color: #e68a00 !important; 
+    border-color: #e99753 !important; 
+}

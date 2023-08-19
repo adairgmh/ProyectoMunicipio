@@ -1,0 +1,238 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Prueba</h1>
+    {{form}}
+    <button type="submit">Enviar</button>
+</body>
+</html>-->
+
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Registro de usuario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+        <link rel="icon" type="image/x-icon" href="{% static "assets/favicon.ico" %}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static "css/styles.css"%}" rel="stylesheet" />
+        <!-- Datatables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        <link href="{% static "datatables/DataTables-1.11.5/css/dataTables.bootstrap4.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap4.min.css"/>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+        <!-- Icons -->
+        <script src="https://kit.fontawesome.com/643f68d018.js" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap Core CSS -->
+
+    <!-- MetisMenu CSS -->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+            <!--header menu start-->
+            <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <div class="sidebar-btn">
+                <a class="navbar-brand" href="#page-top">Tzompantepec <i class="fa-solid fa-bars"></i></a>
+                </div>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded">Administracion</a>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" >{{ user.username }}</a></li>
+                </ul>
+            </div>
+            </div>
+            </nav>
+            <!--header menu end-->
+            <!--sidebar start-->
+            <div class="sidebar">
+            <br>
+                <br>
+                <div class="sidebar-menu">
+                    <center class="profile">
+                        <p>{{ user.username }}</p>
+                    </center>
+                    <li class="item">
+                        <a href="{% url 'homeadmin' %}" class="menu-btn">
+                            <i class="fa-solid fa-house-user"></i><span>Home</span>
+                        </a>
+                    </li>
+                    <li class="item" id="messages">
+                        <a href="{% url 'contribuyentes' %}" class="menu-btn">
+                            <i class="fa-solid fa-users"></i><span>Contribuyentes</span>
+                        </a>
+
+                    </li>
+                    <li class="item" id="profile">
+                        <a href="{% url 'service' %}" class="menu-btn">
+                            <i class="fa-solid fa-droplet"></i><span>Servicios</span>
+                        </a>
+                    </li>
+                    <li class="item" id="messages">
+                        <a href="{% url 'pay' %}" class="menu-btn">
+                            <i class="fa-solid fa-comment-dollar"></i><span>Pagos</span>
+                        </a>
+
+                    </li>
+                    <li class="item" id="settings">
+                        <a href="{% url 'usuarios' %}" class="menu-btn">
+                            <i class="fa-solid fa-user-plus"></i><span>Usuarios</span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="{% url 'logout' %}" class="menu-btn">
+                            <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+                        </a>
+                    </li>
+                </div>
+            </div>
+            <!--sidebar end-->
+            <!--main container start-->
+
+            <div></div>
+           
+
+            <div class="main-container">
+              
+
+            <br>
+                <br>
+            <!-- Login Section-->
+            <div class="card col-6">
+            <div class="row d-flex justify-content-center">
+
+                <div class="card-header">
+                    {% for msg in messages %}
+                        <div class="alert alert-success" role="alert">{{ msg }}
+                        </div>
+                    {% endfor %}
+                    <h5 class="">
+                        <center>Modificar usuario</center>
+                    </h5>
+                </div>
+            
+             
+            
+                <div class="card-body">
+
+                   
+                    
+                    <form method="POST" class="row">
+                        {% csrf_token %}
+                        
+                      
+                        
+                        <div class="" >
+                            <label>Nombre de usuario</label>
+                            <div class="input-group">
+                                {{form.username}}
+                            </div>
+                        </div>
+            
+                        <div class="">
+                            <label>Correo electrónico</label>
+                            <div class="input-group">
+                                {{form.email}}
+                            </div>
+                        </div>
+            
+                        <div class="">
+                            <label>Nombres</label>
+                            <div class="input-group">
+                               {{form.nombres}}
+                            </div>
+                     
+                        </div>
+            
+                        <div class="">
+                            <label>Apellidos</label>
+                            <div class="input-group">
+                                {{form.apellidos}}
+                            </div>
+                        </div>
+            
+                        <div class="">
+                            <label>Contraseña</label>
+                            <div class="input-group">
+                                {{form.password1}}
+                            </div>
+                        </div>
+            
+                        <div class="">
+                            <label>Confirmación de contraseña</label>
+                            <div class="input-group">
+                                {{form.password2}}
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <div>
+                            <center><button type="submit" class="btn btn-primary mb-2 btn-pers" style="background-color: #ac1b3b; border-color: black;">Guardar</button></center>
+                        </div>
+                        
+                    </form>
+                    
+                </div>
+            
+            </div>
+            
+            
+            </div>
+
+
+        </div>
+            </div>
+
+    <!-- jQuery -->
+    <script src="{% static 'base/js/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'base/js/bootstrap.min.js' %}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{% static 'base/js/metisMenu.min.js' %}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static 'base/js/sb-admin-2.js' %}"></script>
+
+</body>
+
+</html>

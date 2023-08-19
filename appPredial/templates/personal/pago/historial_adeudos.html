@@ -1,0 +1,106 @@
+{% extends "personal/base.html" %} {%load static%} {% block contenido %}
+<!-- Masthead-->
+
+<div class="container container-data  d-flex align-items-center flex-column">
+    <div class="col-12">
+        <h1 class="titulo">
+            <center>{{ entity }}</center>
+        </h1>
+
+        <div class="card">
+            <div class="card-header">
+
+                <div class="card-tools">
+                   
+
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+
+                <table class="table table-hover text-nowrap" id="example1">
+                    <thead>
+                        <tr>
+
+                            
+                            <th>RFC</th>
+                            <th>NOMBRE</th>
+                            <th>CLAVE CATASTRAL</th>
+                            <th>AÑO</th>
+                            
+                        
+                            <th>PAGADO</th>
+                            
+
+                           
+                           
+                           
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in object_list %}
+                        <tr>
+                            
+                            <td> {{ c.claveCatastral.rfc}} </td>
+                            <td> {{ c.claveCatastral.rfc.name}} </td>
+                            <td> {{ c.claveCatastral}} </td>
+                            <td> {{ c.agnio}} </td>
+                            
+
+                            {% if c.status_pagado %}
+                            <td><label class="btn btn-success btnTest">Atendido </td>
+                            {%else%}
+                            <td><label class="btn btn-warning btnTest">Pendiente</td>
+                            {% endif %}
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+{% endblock %} {% block javascript %}
+
+<script type="application/javascript">
+    $(function() {
+        $('.btnTest').on('click', function() {
+            $.ajax({
+                url: '{% url '
+                predial: contribuyente_list '%}',
+                type: 'POST',
+                data: {
+                    id: 1
+                },
+                dataType: 'json'
+            }).done(function(data) {
+                console.log(data)
+            }).fail(function(data) {
+                alert("error");
+            }).always(function(data) {
+
+            })
+        });
+
+    });
+</script>
+
+{% endblock %}

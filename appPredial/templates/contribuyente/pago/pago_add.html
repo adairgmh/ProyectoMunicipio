@@ -1,0 +1,234 @@
+{% extends "contribuyente/form.html" %} 
+{% load static %} 
+
+
+{% block card-body %}
+
+	
+		{% csrf_token %}
+		<input type="hidden" name="action" value= "{{ action }}">
+		
+		<div class="row">
+			<div class="col-6">
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.claveCatastral.label }}</label> 
+				{{ form.claveCatastral }}
+			</div>
+			</div>
+			<div class="col-6">
+			<div class="form-group ">
+				<label for="formGroupExampleInput">{{ form.formaPago.label }}</label> 
+				{{ form.formaPago }}
+			</div>
+			</div>
+			<div class="col-6">
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.agnio.label }}</label> 
+				{{ form.agnio }}
+			</div>
+			</div>
+			</div>
+			<div class="row">
+					
+			
+			<div class="col">
+			<div class="form-group" id="rdiv" style="display:none;">
+				<label for="formGroupExampleInput">{{ form.recargo.label }}</label> 
+				{{ form.recargo }}
+			</div>
+			</div>
+			<div class="col">
+			<div class="form-group" id="ddiv" style="display:none;">
+				<label for="formGroupExampleInput">{{ form.descuento.label }}</label> 
+				{{ form.descuento }}
+			</div>
+			</div>
+			</div>
+			<div class="row">
+			<div class="col">
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.fechaPago.label }}</label> 
+				{{ form.fechaPago}}
+			</div>
+			</div>
+			<div class="col">
+			<div class="form-group">
+				<label for="formGroupExampleInput">Tasa Base del Predio</label><br> 
+				{{ tasabase }} 
+				
+			</div>
+			</div>
+
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.total.label }}</label> 
+				{{ form.total  }}
+			</div>
+
+			
+			
+		
+		</div>	
+{% endblock %}
+{% block card-footer %}
+<div>
+	<input type="submit" class="btn btn-primary mb-2 btn-pers" value="Pagar">
+
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block modal %}
+
+  <!-- Modal -->
+  <div class="modal" data-keyboard="false" data-backdrop="static" id="myModal">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Aviso!</h5>
+		  
+		</div>
+		<div class="modal-body">
+		  El cobro se ha realizado con exito!
+		</div>
+		<div class="modal-footer">
+			<a class="btn btn-primary" href="{% url 'predial:timbrar_predial' %}" role="button">Timbrar</a>
+		  <a href="{{ list_url }}"><button type="button" class="btn btn-secondary">Cerrar</button></a>
+		</div>
+	  </div>
+	</div>
+  </div>
+
+
+ 
+
+
+{% endblock %}
+
+
+{% block javascript %} 
+    <script>
+        {% if form.errors %}
+            var errors = '';
+            {% for field in form %}
+                {% for error in field.errors %}
+                    errors += '{{ error }}\n';
+                {% endfor %}
+            {% endfor %}
+            
+            Swal.fire({
+            title: 'Error!',
+            text: errors,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+            });
+        {% endif %}
+
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var parameters = $(this).serializeArray();
+
+            $.ajax({
+                url: window.location.pathname,
+                type: 'POST',
+                data: parameters,
+                dataType: 'json'
+            
+            }).done(function(data) {
+                if (!data.hasOwnProperty('error')) {
+					$('#myModal').modal('show', {
+						backdrop: 'static',
+						keyboard: false
+					});
+                }
+                else{
+                    message_error(data.error);
+					console.log("a")
+                }
+
+				
+            }).fail(function(data) {
+                print("Hola")
+            }).always(function(data) {
+				
+            });
+            
+
+        });
+
+		$(document).ready(function(){
+			$(".op").click(function(evento){
+			  
+				var valor = $(this).val();
+			  
+				if(valor == 'r'){
+					$("#rdiv").css("display", "block");
+					$("#ddiv").css("display", "none");
+					x = document.getElementById('descuento');
+					x.setAttribute("value", 0.0);
+					
+				}else{
+					$("#rdiv").css("display", "none");
+					$("#ddiv").css("display", "block");
+					x = document.getElementById('recargo');
+					x.setAttribute("value", 0.0);
+				}
+
+				if(valor == 'none'){
+					$("#rdiv").css("display", "none");
+					$("#ddiv").css("display", "none");
+					x= document.getElementById('descuento');
+					x.setAttribute("value", 0.0);
+
+					y = document.getElementById('recargo');
+					y.setAttribute("value", 0.0);
+				}
+		});
+	});
+
+	$(document).ready(function(){
+		x = document.getElementById('spTotal');
+		x.setAttribute("value", {{ tasabase }});
+	});
+
+	function sumar (valor) {
+		var total = 0;	
+		valor = parseFloat(valor); // Convertir el valor a un flotante (número).
+		
+		x = document.getElementById('spTotal');
+		
+		// Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+		total = (total == null || total == undefined || total == "") ? 0 : total;
+		
+		/* Esta es la suma. */
+		total = {{ tasabase }}
+		total = (parseFloat(total) + parseInt(valor));
+		console.log("xd")
+		// Colocar el resultado de la suma en el control "span".
+		x.setAttribute("value", total);
+	}
+
+	function restar (valor) {
+		var total = 0;	
+		valor = parseFloat(valor); // Convertir el valor a un entero (número).
+		
+		x = document.getElementById('spTotal');
+		
+		// Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+		total = (total == null || total == undefined || total == "") ? 0 : total;
+		
+		/* Esta es la suma. */
+		total = {{ tasabase }}
+		total = (parseFloat(total) - parseInt(valor));
+		
+		// Colocar el resultado de la suma en el control "span".
+		x.setAttribute("value", total);
+	}
+	
+    </script>
+
+
+{% endblock %}

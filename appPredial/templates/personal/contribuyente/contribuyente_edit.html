@@ -1,0 +1,156 @@
+{% extends "personal/form.html" %} 
+{% load static %} 
+
+
+{% block card-body %}
+
+	
+		{% csrf_token %}
+		<input type="hidden" name="action" value= "{{ action }}">
+		
+			<div class="row ">
+			{% for field in form.visible_fields %}
+			
+			<div class="form-group form-add col-3 " >
+				<div class="col-14 ">
+					<label for="formGroupExampleInput">
+						{{ field.label }}
+					</label> 
+
+						{{ field }}
+				</div>
+				<div class="col-4">
+					<label for="formGroupExampleInput">
+						
+					</label> 
+
+						
+				</div>
+			   
+			</div>
+			
+			{% endfor %}
+		</div>
+		
+		
+		
+{% endblock %}
+
+{% block card-footer %}
+<a  href="{% url 'predial:contribuyente_list' %}">
+	<input type="button" class="btn btn-danger mb-2 mx-2 btn-pers" value="Cancelar">
+</a>
+<input type="submit" class="btn btn-primary mb-2 btn-pers" value="Guardar Registro">
+{% endblock %}
+
+{% block javascript %} 
+	
+
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+	<script>
+		$(function(){
+			$("#id_estado").select2({
+				allowClear: true,
+				placeholder: {
+					id:'0',
+					text: 'Seleccione una comunidad'
+				}
+	
+			});
+		});
+		
+	
+	</script>	
+
+	<script>
+		$(function(){
+			$("#id_municipio").select2({
+				allowClear: true,
+				placeholder: {
+					id:'0',
+					text: 'Seleccione una comunidad'
+				}
+
+			});
+		});
+		
+
+	</script>	
+	
+	<script>
+		$(function(){
+			$("#id_comunidad").select2({
+				allowClear: true,
+				placeholder: {
+					id:'0',
+					text: 'Seleccione una comunidad'
+				}
+	
+			});
+		});
+		
+	
+	</script>	
+
+	<script>
+		$(function(){
+			$("#id_colonia").select2({
+				allowClear: true,
+				placeholder: {
+					id:'0',
+					text: 'Seleccione una colonia'
+				}
+	
+			});
+		});
+		
+	</script>	
+
+<script >
+	{% if form.errors %}
+		var errors = '';
+		{% for field in form %}
+			{% for error in field.errors %}
+				errors += '{{ error }}\n';
+			{% endfor %}
+		{% endfor %}
+		
+		Swal.fire({
+		title: 'Error!',
+		text: errors,
+		icon: 'error',
+		confirmButtonText: 'Ok'
+		});
+	{% endif %}
+
+	$('form').on('submit', function (e) {
+		e.preventDefault();
+		var parameters = $(this).serializeArray();
+
+		$.ajax({
+			url: window.location.pathname,
+			type: 'POST',
+			data: parameters,
+			dataType: 'json'
+		
+		}).done(function(data) {
+			if (!data.hasOwnProperty('error')) {
+			   
+				location.href = '{{ list_url }}';
+				return false
+			}
+			else{
+				message_error(data.error);
+			}
+		}).fail(function(data) {
+			print("Hola")
+		}).always(function(data) {
+			
+		});
+	});
+</script>
+    
+{% endblock %}
+

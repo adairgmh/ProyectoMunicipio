@@ -1,0 +1,161 @@
+{% extends "contribuyente/base.html" %} 
+{%load static %}
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#page-top">Tzompantepec</a>
+            <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Servicios</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">Info</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contacto</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">{{ user.username }}</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'generales:logoutC' %}"><span class="icon"><ion-icon name="log-out-outline"></ion-icon></span></a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+{% block contenido %}
+
+<div class="container container-data  d-flex align-items-center flex-column">
+    <div class="col-12">
+        <h1 class="titulo">
+            <center>Historial de Pagos</center>
+        </h1>
+
+
+        <div class="card">
+            <div class="card-header">
+                
+            </div>
+{% if object_list %}
+            <div class="card-body">
+                <h4 style="text-align: center;">  Predio con la Clave Catastral: {{ query }} </h4><br>
+                <h5 style="text-align: center;">  Tipo de Predio: {{ predio.idtipo.tipo }}
+                    
+                </h5><br>
+                <div class="card-body table-responsive p-0">
+
+                    <table class="table table-hover text-nowrap" id="example1">
+                        <thead>
+                            <tr>
+                                <th>
+                                COSTO DEL PREDIO
+                                </th>
+                                <th>
+                                AÑO
+                                </th>
+                                <th>
+                                RECARGO
+                                </th>
+                                <th>
+                                DESCUENTO
+                                </th>
+                                <th>
+                                Total
+                                </th>
+                                <th>
+                                    PAGADO
+                                </th>
+                                <th>
+                                ACCIONES
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <form>
+                                {% for c in object_list %}
+                                <tr>
+                                    <td> {{ c.claveCatastral.idtipo.costo}} </td>
+                                    <td> {{ c.agnio}} </td>
+                                    <td> 
+                                    {{ c.recargo}}
+                                    </td>
+                                    <td> 
+                                    {{c.descuento}} 
+                                    </td>
+                                    <td> 
+                                    {{c.total}} 
+                                    </td>
+                                    <td> 
+                                        {% if c.status_pagado %}
+                                            <button class="btn btn-success btnTest">Pagado</button>
+                                        {%else%}
+                                            <a href="#"><button class="btn btn-warning btnTest">Pendiente</button></a>
+                                        {% endif %}
+                                        
+                                    </td>
+                                    <td>
+                                        {% if c.status_pagado %}
+                                            
+                                        {%else%}
+                                        <a href="add/{{c.id}} "><button class="btn btn-primary btnTest">Pagar</button></a> 
+                                        {% endif %}
+                                        
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="input-group-append">
+                    <a href="{% url 'usuario:usuario_info' %}"><button class="btn btn-primary btnTest">Regresar</button></a>
+                    
+                    
+                    
+                    
+                </div>
+
+                  
+                </div>   
+            </div> 
+            
+{% elif not object_list and predio %}
+            <div class="card-body">
+                <h4 style="text-align: center;">  Predio con la Clave Catastral: {{ query }} </h4><br>
+                <h5 style="text-align: center;">  Tipo de Predio: {{ predio.idtipo.tipo }}
+                    
+                </h5><br>
+                
+                <h5 style="text-align: center;">  No hay pagos registrados!</h5><br>
+            </div>
+
+            <div class="card-footer">
+                <div class="input-group-append">
+                    {% if perms.predial.add_pago %}
+                    <a href="{% url 'predial:pagoP_add' %}?query={{query}}"><button class="btn btn-primary btnTest">Cobrar</button></a>
+                    {% else %}
+                    
+                    {% endif %}
+                </div>
+
+                
+                </div>   
+            </div> 
+{% elif query == "" %}
+
+{% elif not object_list and not predio and query %}
+            
+    <h5 style="text-align: center;">  No existe ese predio!</h5><br>
+
+    
+{% endif %}   
+        </div>
+    </div>
+</div>
+
+    
+    
+{% endblock %}

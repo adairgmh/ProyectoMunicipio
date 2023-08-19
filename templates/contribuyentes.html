@@ -1,0 +1,202 @@
+{% load static %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Modulo Agua</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+        <link rel="icon" type="image/x-icon" href="{% static "assets/favicon.ico" %}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static "css/styles.css"%}" rel="stylesheet" />
+        <!-- Datatables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        <link href="{% static "datatables/DataTables-1.11.5/css/dataTables.bootstrap4.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap4.min.css"/>
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+        <!-- Icons -->
+        <script src="https://kit.fontawesome.com/643f68d018.js" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+
+    <div class="wrapper">
+        <!--wrapper start-->
+        <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+            <div class="container">
+                <div class="sidebar-btn">
+                <a class="navbar-brand" href="#page-top">Tzompantepec <i class="fa-solid fa-bars"></i></a>
+                </div>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-0 mx-lg-1">{% if request.user|has_group:"admin" %}
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded">Administracion</a>
+                    {% endif %}
+                {% if request.user|has_group:"tesoreria" %}
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded">Tesoreria</a>
+                    {% endif %}
+                {% if request.user|has_group:"presidencia" %}
+                       <a class="nav-link py-3 px-0 px-lg-3 rounded">Presidencia</a>
+                    {% endif %}</li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" >{{ user.username }}</a></li>
+                </ul>
+            </div>
+            </div>
+        </nav>
+            <!--header menu end-->
+            <!--sidebar start-->
+            <div class="sidebar">
+            <br>
+            <br>
+                <div class="sidebar-menu">
+                    <center class="profile">
+                        <p>{{ user.username }}</p>
+                    </center>
+                    <li class="item">
+                        <a href="{% url 'homeadmin' %}" class="menu-btn">
+                            <i class="fa-solid fa-house-user"></i><span>Home</span>
+                        </a>
+                    </li>
+                    <li class="item" id="messages">
+                        <a href="{% url 'contribuyentes' %}" class="menu-btn">
+                            <i class="fa-solid fa-users"></i><span>Contribuyentes</span>
+                        </a>
+
+                    </li>
+                    <li class="item" id="profile">
+                        <a href="{% url 'service' %}" class="menu-btn">
+                            <i class="fa-solid fa-droplet"></i><span>Servicios</span>
+                        </a>
+                    </li>
+                    <li class="item" id="messages">
+                        <a href="{% url 'pay' %}" class="menu-btn">
+                            <i class="fa-solid fa-comment-dollar"></i><span>Pagos</span>
+                        </a>
+
+                    </li>
+                    {% if request.user|has_group:"admin" %}
+                    <li class="item" id="settings">
+                        <a href="{% url 'usuarios' %}" class="menu-btn">
+                            <i class="fa-solid fa-user-plus"></i><span>Usuarios</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="item">
+                        <a href="{% url 'logout' %}" class="menu-btn">
+                            <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+                        </a>
+                    </li>
+                </div>
+            </div>
+            <!--sidebar end-->
+            <!--main container start-->
+
+            <div class="main-container">
+            <br>
+            <!-- Login Section-->
+        <div class="container">
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                Error!
+                </div>
+            {% endif %}
+            <h2>Registrar un nuevo contribuyente</h2>
+        <form action="{% url 'guardarcontribuyente' %}" method="POST">
+            {% csrf_token %}
+            {% if mensaje %}
+                <div class="alert alert-success" role="alert">
+                El contribuyente ha sido registrado exitosamente!
+                </div>
+            {% endif %}
+
+        <div class="row">
+            <div class="col">
+                <label for="exampleFormControlSelect1">Nombre</label>
+                {{ form.nombre_propietario }}
+              </div>
+            <div class="col">
+                <label for="exampleFormControlSelect1">Apellido paterno</label>
+                {{ form.apellido_paterno }}
+              </div>
+            <div class="col">
+                <label for="exampleFormControlSelect1">Apellido materno</label>
+                {{ form.apellido_materno }}
+              </div>
+            <div class="col">
+                <label for="exampleFormControlSelect1">Genero</label>
+                {{ form.genero }}
+              </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <label for="exampleFormControlSelect1">Calle</label>
+                {{ form.calle }}
+              </div>
+            <div class="col">
+                <label for="exampleFormControlSelect1">Numero telefonico</label>
+                {{ form.numero_celular }}
+              </div>
+            <div class="col">
+                <label for="exampleFormControlSelect1">Comunidad</label>
+                {{ form.comunidad }}
+              </div>
+            <div class="col">
+                <label for="exampleFormControlSelect1">Codigo postal</label>
+                {{ form.codigo_postal }}
+              </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <label for="exampleFormControlSelect1">Colonia</label>
+                {{ form.colonia }}
+              </div>
+            <div class="col">
+                <label for="exampleFormControlSelect1">Municipio</label>
+                {{ form.municipio }}
+              </div>
+            <div class="col">
+                <label for="exampleFormControlSelect1">Estado</label>
+                {{ form.estado }}
+              </div>
+            <div class="col">
+                <label for="exampleFormControlSelect1">Email</label>
+                {{ form.email }}
+              </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Registrar contribuyente</button>
+        <br>
+        </form>
+        </div>
+            </div>
+            <!--main container end-->
+        </div>
+
+        <!--wrapper end-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="{% static "js/scripts.js"%}"></script>
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <!-- * *                               SB Forms JS                               * *-->
+    <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="{% static "js/main.js" %}"></script>
+    <script type="text/javascript" src="{%static "datatables/datatables.min.js" %}"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,42 @@
+{% extends "personal/form.html" %} 
+{% load static %} 
+
+
+{% block card-body %}
+
+	
+		{% csrf_token %}
+		<input type="hidden" name="action" value= "{{ action }}">
+		
+			<div class="row ">
+			{% for field in form.visible_fields %}
+			
+			<div class="form-group form-add col-3 " >
+				<div class="col-14 ">
+					<label for="formGroupExampleInput">
+						{{ field.label }}
+					</label> 
+
+						{{ field }}
+				</div>
+				<div class="col-4">
+					<label for="formGroupExampleInput">
+						
+					</label> 
+
+						
+				</div>
+			   
+			</div>
+			
+			{% endfor %}
+		</div>
+		
+		
+		
+{% endblock %}
+
+{% block card-footer %}
+<input type="submit" class="btn btn-primary mb-2 btn-pers" value="Guardar Registro">
+{% endblock %}
+		

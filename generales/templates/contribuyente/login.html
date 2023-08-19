@@ -1,0 +1,69 @@
+{% extends 'contribuyente/base.html' %} 
+{% load static %} 
+
+{% block contenido %}
+
+
+<section class="page-section portfolio" id="portfolio">
+    <div class="container">
+        
+        <h3 class="titulo">
+            <center>Bienvenido!</center>
+            
+        </h3>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="imgcontainer">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-xl-7">
+                <img class="img-fluid avatar" src="{% static 'assets/img/user.png' %}"  />
+                </div>
+            </div>
+              </div>
+            
+              <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-7">
+              <div class="container ">
+                <fieldset>
+                    <div class="form-floating mb-3">
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Username" name="username" type="text" id="id_username" autofocus>
+                    </div>
+                </div>
+                <div class="form-floating mb-3"> 
+                    <div class="form-group ">
+                        <input class="form-control" placeholder="Password" name="password" type="password" id="id_password" value="">
+                    </div>
+                </div>
+                    <!-- Change this to a button or input when using this as a form -->
+                    <button type="submit" class="btn btn-lg btn-primary btn-block but">Entrar</button>
+                </fieldset>
+              </div>
+              </div>
+            </div>
+
+            
+        </form>
+        </div>
+    </div>
+    <small class="text-danger">
+        {% if form.errors %}
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        {{ error|escape }}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+            {% if form.non_field_errors%}
+                {% for error in form.non_field_errors %}
+                    {{ error|escape }}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    </small>
+
+</section>
+
+{% endblock %}

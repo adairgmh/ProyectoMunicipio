@@ -1,0 +1,65 @@
+{% extends 'personal/base.html' %}
+{% load static %} 
+
+{% block contenido %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="cols-md-8 col-lg-2 mb-0">
+            <p class="" style="margin: 90px;"></p>
+            <center><img class="img-fluid" style="width: 50%;" 
+                src="{% static 'assets/img/portfolio/pago.png' %}" alt="..." /></center>
+        </div>
+    </div>
+    <h1>
+        <center>Pago</center>
+    </h1>
+</div>
+<br>
+<div class="container">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset disabled>
+            <div class="row">
+                <div class="col">
+                    <label for="disabledTextInput">Folio</label>
+                    <input type="text" id="disabledTextInput" class="form-control" 
+                    placeholder="{{ ordenes_pago.folio }}">
+                </div>
+                <div class="col">
+                    <label for="disabledTextInput">Nombre del Solicitante</label>
+                    <input type="text" id="disabledTextInput" class="form-control"
+                    placeholder="{{ ordenes_pago.nombre_solicitante }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="disabledTextInput">Concepto</label>
+                    <input type="text" id="disabledTextInput" class="form-control"
+                    placeholder="{{ ordenes_pago.concepto }}">
+                </div>
+                <div class="col">
+                    <label for="disabledTextInput">Monto</label>
+                    <input type="text" id="disabledTextInput" class="form-control" 
+                    placeholder="{{ ordenes_pago.monto }}">
+                </div>
+            </div>
+        </fieldset>
+        <br>
+        <center>{{ form }}</center>
+        <div>
+            <br>
+            <div class="row">
+                <div>
+                    <center>
+                        <button class="btn btn-primary btn-xl" type="submit">Guardar</button>
+                        <a href="{% url 'caja' %}" class="btn btn-primary btn-xl">
+                            <i class=""></i> Cancelar
+                        </a>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock contenido %}
+    

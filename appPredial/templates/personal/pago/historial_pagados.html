@@ -1,0 +1,163 @@
+{% extends "personal/base.html" %} 
+{%load static %}
+
+
+{% block contenido %}
+
+<div class="container container-data  d-flex align-items-center flex-column">
+    <div class="col-12">
+        <h1 class="titulo">
+            <center>Historial de Pagos</center>
+        </h1>
+
+
+        <div class="card">
+            <div class="card-header">
+                <form method="get">
+                    <div class="card-tools">
+                        <div class="input-group-append">
+                            <div class="form-group">
+                                <label for="formGroupExampleInput">Clave Catastral</label> 
+                                <input type="text" class="form-control" name="buscar" >
+                                <button type="submit" class="btn btn-buscar" id="Buscar">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+{% if object_list %}
+            <div class="card-body">
+                <div class="card-body table-responsive p-0">
+                    <div class="row">
+                        <h4 style="text-align: center;">  Predio con la Clave Catastral: {{ query }} </h4><br>
+                        <h5 style="text-align: center;">  Tipo de Predio: {{ predio.idtipo.tipo }}</h5><br>
+
+                    </div>
+                
+
+                    <table class="table table-hover text-nowrap" id="example1">
+                        <thead>
+                            <tr>
+                                <th>
+                                COSTO DEL PREDIO
+                                </th>
+                                <th>
+                                AÑO
+                                </th>
+                                <th>
+                                RECARGO
+                                </th>
+                                <th>
+                                DESCUENTO
+                                </th>
+                                <th>
+                                    INAPAM
+                                </th>
+                                <th>
+                                TOTAL
+                                </th>
+                                <th>
+                                PAGADO
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <form>
+                                {% for c in object_list %}
+                                <tr>
+                                    <td> {{ c.claveCatastral.idtipo.costo}} </td>
+                                    <td> {{ c.agnio}} </td>
+                                    <td> 
+                                    {{ c.recargo}}
+                                    </td>
+                                    <td> 
+                                    {{c.descuento}} 
+                                    </td>
+                                    
+
+                                    {% if c.status_inapam %}
+                                    <td> <button class="btn btn-success btnTest">Si</button> </td>
+                                    {%else%}
+                                    <td><button class="btn btn-warning btnTest">No</button></td>
+                                    {% endif %}
+
+                                    <td> 
+                                        {{c.total}} 
+                                        </td>
+
+                                    {% if c.status_pagado %}
+                                    <td> <button class="btn btn-success btnTest">Pagado</button></td>
+                                    {%else%}
+                                    <td><a href="pagar/{{c.id}} "><button class="btn btn-warning btnTest">Pendiente</button></a></td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="input-group-append">
+                    {% if perms.predial.add_pago %}
+                    <a href="{% url 'predial:pago_add' %}?query={{query}}"><button class="btn btn-cobrar btnTest">Cobrar</button></a>
+                    {% else %}
+                    
+                    {% endif %}
+                </div>
+
+                  
+                </div>   
+            </div> 
+            
+{% elif not object_list and predio %}
+            <div class="card-body">
+                <div class="card-body table-responsive p-0">
+                    <div class="row">
+                        <h4 style="text-align: center;">  Predio con la Clave Catastral: {{ query }} </h4><br>
+                        <h5 style="text-align: center;">  Tipo de Predio: {{ predio.idtipo.tipo }}</h5><br>
+                        <h5 style="text-align: center;">  No hay pagos registrados!</h5><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <div class="vh -100 row m-0 text-center align-items-center justify-content-center">
+                    {% if perms.predial.add_pago %}
+                    <a href="{% url 'predial:pago_add' %}?query={{query}}"><button class="btn btn-cobrar btnTest">Cobrar</button></a>
+                    {% else %}
+                    
+                    {% endif %}
+                </div>
+
+                
+                </div>   
+            </div> 
+{% elif query == "" %}
+
+{% elif not object_list and not predio and query %}
+            
+    <h5 style="text-align: center;">  No existe ese predio!</h5><br>
+    <div style="text-align: center;">
+        {% if perms.predial.add_contribuyente %}
+        <a href="{% url 'predial:predio_list' %}">
+            <button type="button" class="btn btn-buscar">Buscar predios por contribuyente</button>
+            <br>
+            <br>
+        {% else %}
+                    
+        {% endif %}
+        </a>
+    </div>
+
+    
+{% endif %}   
+        </div>
+    </div>
+</div>
+
+    
+    
+{% endblock %}

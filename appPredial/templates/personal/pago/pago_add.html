@@ -1,0 +1,293 @@
+{% extends "personal/form.html" %} 
+{% load static %} 
+
+
+{% block card-body %}
+
+	
+		{% csrf_token %}
+		<input type="hidden" name="action" value= "{{ action }}">
+		
+		<div class="row">
+			<div class="col-6">
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.claveCatastral.label }}</label> 
+				{{ form.claveCatastral }}
+			</div>
+			</div>
+			<div class="col-6">
+			<div class="form-group ">
+				<label for="formGroupExampleInput">{{ form.formaPago.label }}</label> 
+				{{ form.formaPago }}
+			</div>
+			</div>
+			<div class="col-6">
+			<div class="form-group">
+				<label for="formGroupExampleInput">{{ form.agnio.label }}</label> 
+				{{ form.agnio }}
+			</div>
+			</div>
+			</div>
+			<div class="row">
+			<div class="col">
+			<h5>Agregar:</h5>
+			<p class="auto-style3 form-check form-check-inline">
+				<input name="op" class="op form-check-input" type="radio"  value="r"/>
+				<span class="auto-style4 form-check-lavel"> Recargo</span>
+			</p>
+			
+			<p class="auto-style3 form-check form-check-inline">
+				<input name="op" class="op form-check-input" type="radio"/>
+				<span class="auto-style4 form-check-lavel"> Descuento</span>
+			</p>
+
+			<p class="auto-style3 form-check form-check-inline">
+				<input name="op" class="op form-check-input" type="radio"  value="none" checked/>
+				<span class="auto-style4 form-check-lavel"> Ninguno de los 2</span>
+			</p>
+			</div>
+			
+			
+			<div class="col">
+			<div class="form-group" id="rdiv" style="display:none;">
+				<label for="formGroupExampleInput">{{ form.recargo.label }}</label> 
+				{{ form.recargo }}
+			</div>
+			</div>
+			<div class="col">
+				<div class="form-group" id="ddiv" style="display:none;">
+					<label for="formGroupExampleInput">{{ form.descuento.label }}</label> 
+					{{ form.descuento }}
+					<p class="auto-style3 form-check form-check-inline">
+						{{ form.status_inapam }}
+						<span class="auto-style4 form-check-lavel"> Descuento de INAPAM</span>
+					</p>
+				</div>
+				
+			</div>
+			
+			</div>
+			<div class="row">
+			<div class="col">
+				<div class="form-group">
+					<label for="formGroupExampleInput">{{ form.fechaPago.label }}</label> 
+					{{ form.fechaPago}}
+				</div>
+				</div>
+				<div class="col">
+				<div class="form-group">
+					<label for="formGroupExampleInput">Tasa Base del Predio</label><br> 
+					{{ tasabase }} 
+					
+				</div>
+				</div>
+
+				<div class="form-group">
+					<label for="formGroupExampleInput">{{ form.total.label }}</label> 
+					{{ form.total  }}
+				</div>
+
+				
+				<div class="form-group">
+					<label for="formGroupExampleInput">{{ form.status_pagado.label }}</label> 
+					{{ form.status_pagado  }}
+				</div>
+			
+		
+		</div>	
+{% endblock %}
+{% block card-footer %}
+
+<a  href="{% url 'predial:historial_pagados' %}">
+	<input type="button" class="btn btn-danger mb-2 mx-2 btn-pers" value="Cancelar">
+</a>
+<div>
+	<input type="submit" class="btn btn-cobrar mb-2 btn-pers" value="Cobrar">
+
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block modal %}
+
+  <!-- Modal -->
+  <div class="modal" data-keyboard="false" data-backdrop="static" id="myModal">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Aviso!</h5>
+		  
+		</div>
+		<div class="modal-body">
+		  El cobro se ha realizado con exito!
+		</div>
+		<div class="modal-footer">
+			<a class="btn btn-primary" href="{% url 'predial:timbrado_list' %}" role="button">Timbrar</a>
+		  <a href="{% url 'predial:historial_pagados'%}?buscar={{ query }}"><button type="button" class="btn btn-secondary">Cerrar</button></a>
+		</div>
+	  </div>
+	</div>
+  </div>
+
+
+ 
+
+
+{% endblock %}
+
+
+{% block javascript %}
+
+    <script>
+		$(window).on('load', function(){
+
+			$('#myModal').modal(
+			{
+			  keyboard: false,
+			  backdrop: 'static'
+			});
+		  
+		  });
+
+        {% if form.errors %}
+            var errors = '';
+            {% for field in form %}
+                {% for error in field.errors %}
+                    errors += '{{ error }}\n';
+                {% endfor %}
+            {% endfor %}
+            
+            Swal.fire({
+            title: 'Error!',
+            text: errors,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+            });
+        {% endif %}
+
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var parameters = $(this).serializeArray();
+
+            $.ajax({
+                url: window.location.pathname,
+                type: 'POST',
+                data: parameters,
+                dataType: 'json'
+            
+            }).done(function(data) {
+                if (!data.hasOwnProperty('error')) {
+					$('#myModal').modal('show',{backdrop: 'static', keyboard: false});
+					
+                }
+                else{
+                    message_error(data.error);
+					console.log("a")
+                }
+
+				
+            }).fail(function(data) {
+                print("Hola")
+            }).always(function(data) {
+				
+            });
+            
+
+        });
+
+		$(document).ready(function(){
+			$(".op").click(function(evento){
+			  
+				var valor = $(this).val();
+			  
+				if(valor == 'r'){
+					$("#rdiv").css("display", "block");
+					$("#ddiv").css("display", "none");
+					x = document.getElementById('descuento');
+					x.setAttribute("value", 0.0);
+					
+					
+					
+					
+				}else{
+					$("#rdiv").css("display", "none");
+					$("#ddiv").css("display", "block");
+					x = document.getElementById('recargo');
+					x.setAttribute("value", 0.0);
+					
+				}
+
+				if(valor == 'none'){
+					$("#rdiv").css("display", "none");
+					$("#ddiv").css("display", "none");
+					x= document.getElementById('descuento');
+					x.setAttribute("value", 0.0);
+
+					y = document.getElementById('recargo');
+					y.setAttribute("value", 0.0);
+					
+				}
+		});
+	});
+	
+	$(document).ready(function(){
+		x = document.getElementById('spTotal');
+		x.setAttribute("value", {{ tasabase }});
+		
+
+		date = document.getElementById('fechaPago');
+		date.setAttribute("value", {{ date }});
+	});
+	
+	function sumar (valor) {
+		var total = 0;	
+		valor = parseFloat(valor); // Convertir el valor a un flotante (número).
+		
+		x = document.getElementById('spTotal');
+		
+		// Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+		total = (total == null || total == undefined || total == "") ? 0 : total;
+		
+		/* Esta es la suma. */
+		total = {{ tasabase }}
+		total = (parseFloat(total) + parseInt(valor));
+		console.log("xd")
+		// Colocar el resultado de la suma en el control "span".
+		x.setAttribute("value", total);
+	}
+
+	function restar (valor) {
+		var total = 0;	
+		valor = parseFloat(valor); // Convertir el valor a un entero (número).
+		
+		x = document.getElementById('spTotal');
+		
+		
+
+		// Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+		total = (total == null || total == undefined || total == "") ? 0 : total;
+		
+		/* Esta es la resta. */
+		tasabase = {{ tasabase }}
+
+		if (document.getElementById('inapam').checked) {
+            descuentoInapam = parseFloat(tasabase)*0.5
+        } else {
+            descuentoInapam = 0
+        }
+
+		subtotal = parseFloat(tasabase) - parseFloat(descuentoInapam)
+		total = (parseFloat(subtotal)  - parseInt(valor));
+		
+		// Colocar el resultado de la suma en el control "span".
+		x.setAttribute("value", total);
+	}
+	
+    </script>
+
+
+{% endblock %}

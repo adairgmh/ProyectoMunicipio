@@ -1,0 +1,105 @@
+{% extends "personal/base.html" %} {%load static%} {% block contenido %}
+<!-- Masthead-->
+
+<div class="container container-data  d-flex align-items-center flex-column">
+    <div class="col-12">
+        <h1 class="titulo">
+            <center>{{ entity }}</center>
+        </h1>
+
+        <div class="card">
+            <div class="card-header">
+
+                <div class="card-tools">
+                   
+
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+
+                <table class="table table-hover text-nowrap" id="example1">
+                    <thead>
+                        <tr>
+
+                            
+                            <th>CLAVE CATASTRAL</th>
+                            <th>AÑO</th>
+                            <th>FECHA DE PAGO</th>
+                            <th>FORMA DE PAGO</th>
+                            <th>RECARGO</th>
+                            <th>DESCUENTO</th>
+                            <th>TOTAL</th>
+                            
+
+                            <th>TIMBRADO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in object_list %}
+                        <tr>
+                            
+                            <td> {{ c.claveCatastral}} </td>
+                            <td> {{ c.agnio}} </td>
+                            <td> {{ c.fechaPago}} </td>
+                            <td> {{ c.formaPago}} </td>
+                            <td> {{ c.recargo}} </td>
+                            <td> {{ c.descuento}} </td>
+                            <td> {{ c.total}} </td>
+
+                            {% if c.status_timbrado %}
+                            <td> <a href="timbrar/{{c.id}} "><button class="btn btn-success btnTest">Atendido</button></a> </td>
+                            {%else%}
+                            <td><a href="timbrar/{{c.id}} "><button class="btn btn-warning btnTest">Pendiente</button></a></td>
+                            {% endif %}
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+{% endblock %} {% block javascript %}
+
+<script type="application/javascript">
+    $(function() {
+        $('.btnTest').on('click', function() {
+            $.ajax({
+                url: '{% url '
+                predial: contribuyente_list '%}',
+                type: 'POST',
+                data: {
+                    id: 1
+                },
+                dataType: 'json'
+            }).done(function(data) {
+                console.log(data)
+            }).fail(function(data) {
+                alert("error");
+            }).always(function(data) {
+
+            })
+        });
+
+    });
+</script>
+
+{% endblock %}

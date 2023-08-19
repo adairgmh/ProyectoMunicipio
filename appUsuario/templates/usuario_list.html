@@ -1,0 +1,118 @@
+{% extends "personal/base.html" %} {%load static%} {% block contenido %}
+<!-- Masthead-->
+
+<div class="container container-data  d-flex align-items-center flex-column">
+    <div class="col-12">
+        <h1 class="titulo">
+            <center>{{ title }}</center>
+        </h1>
+
+        <div class="card">
+            <div class="card-header">
+
+                <div class="card-tools">
+                    <div class="input-group-append">
+                        
+                        {% if perms.predial.add_predio %}
+                        <a href="{% url 'usuario:usuario_add' %}"><button class="btn btn-primary btnTest">Nuevo</button></a>
+                        {% else %}
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+
+                <table class="table table-hover text-nowrap" id="example1">
+                    <thead>
+                        <tr>
+
+                            <th>NOMBRE DE USUARIO</th>
+                            <th>
+                                EMAIL
+                            </th>
+                            <th>
+                                NOMBRE
+                            </th>
+                            <th>
+                                APELLIDOS
+                            </th>
+                            <th>ACCIONES</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in object_list %}
+                        <tr>
+                            
+                            <td> {{ c.username}} </td>
+                            <td> {{ c.email}} </td>
+                            <td> {{ c.nombres}} </td>
+                            <td> {{ c.apellidos}} </td>
+                            <td>
+                            
+                                {% if perms.usuario.change_usuario %}
+                                <a href="{% url 'usuario:usuario_edit' c.id %} "><button class="btn btn-secondary btnTest">Editar</button></a>
+                                {% else %}
+                                    
+                                {% endif %}
+                                
+                                {% if perms.usuario.delete_usuario %}
+                                <a href="{% url 'usuario:usuario_delete' c.id %} "><button class="btn btn-danger btnTest">Eliminar</button></a>
+                                {% else %}
+
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+{% endblock %} {% block javascript %}
+
+<script type="application/javascript">
+    $(function() {
+        $('.btnTest').on('click', function() {
+            $.ajax({
+                url: '{% url '
+                predial: predial_list '%}',
+                type: 'POST',
+                data: {
+                    id: 1
+                },
+                dataType: 'json'
+            }).done(function(data) {
+                console.log(data)
+            }).fail(function(data) {
+                alert("error");
+            }).always(function(data) {
+
+            })
+        });
+
+    });
+</script>
+
+{% endblock %}
